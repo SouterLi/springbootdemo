@@ -11,16 +11,16 @@
     </resultMap>
 
     <select id="selectById" resultMap="UserResultMap">
-        SELECT * FROM users WHERE id = #{id}
+        SELECT * FROM user WHERE id = #{id}
     </select>
 
     <insert id="insert" parameterType="com.aiden.dto.User">
-        INSERT INTO users (username, password, email)
+        INSERT INTO user (username, password, email)
         VALUES (#{username}, #{password}, #{email})
     </insert>
 
     <update id="update" parameterType="com.aiden.dto.User">
-        UPDATE users
+        UPDATE user
         SET username = #{username},
         password = #{password},
         email = #{email}

@@ -1,0 +1,12 @@
+# 通用排除
+.git/
+.DS_Store
+*.log
+.env*
+node_modules/  # 前端依赖（构建阶段会重新装，无需复制）
+venv/          # Python 虚拟环境
+target/        # Java 打包目录
+__pycache__/   # Python 缓存
+dist/          # 前端构建产物（构建阶段会重新生成）
+logs/          # 日志目录
+tmp/           # 临时文件

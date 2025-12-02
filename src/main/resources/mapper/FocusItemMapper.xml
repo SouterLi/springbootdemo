@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FocusItemMapper">
+
+    <resultMap id="FocusItemResponseDTOMap" type="com.aiden.dto.FocusItemResponseDTO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="name" property="name"/>
+        <result column="duration" property="duration"/>
+        <result column="bg_url" property="bgUrl"/>
+        <result column="bgm_url" property="bgmUrl"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 分页查询-总条数 -->
+    <select id="countByQuery" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM focus_item WHERE is_delete = 0
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+
+    <!-- 分页查询-当前页数据 -->
+    <select id="selectPageByQuery" resultMap="FocusItemResponseDTOMap">
+        SELECT id, user_id, name, duration, bg_url, bgm_url, sort, create_time, update_time
+        FROM focus_item
+        WHERE is_delete = 0
+        <if test="query.userId != null">
+            AND user_id = #{query.userId}
+        </if>
+        <if test="query.name != null and query.name != ''">
+            AND name LIKE CONCAT('%', #{query.name}, '%')
+        </if>
+        ORDER BY
+        <choose>
+            <when test="query.sortField != null and query.sortField != ''">
+                ${query.sortField}
+            </when>
+            <otherwise>
+                update_time
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="query.sortOrder != null and query.sortOrder != ''">
+                ${query.sortOrder}
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+        LIMIT #{query.startRow}, #{query.pageSize}
+    </select>
+
+</mapper>
